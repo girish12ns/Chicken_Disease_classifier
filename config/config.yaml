@@ -1,0 +1,7 @@
+artifacts_root: artifacts
+
+Data_ingestion:
+  root_dir: artifacts/data_ingestion
+  source_dir: Data_notebook/Data/Train
+
+

@@ -1,11 +1,11 @@
 import setuptools
 import os
 
-with open("README.md","r") as f:
+with open("README.md","r",encoding='utf-8')as f:
     long_description=f.read()
 
 
-_version_="0.0.0"
+__version__="0.0.0"
 REPO_NAME="Chicken_Disease_classifier"
 SOURCE_REPO_NAME="CHICKEN_DISEASE_CLASSIFIER"
 AUTHOR_ID="girish12ns"
@@ -13,7 +13,7 @@ EMAIL_ID="girish12n@gmail.com"
 
 
 setuptools.setup(
-    version=_version_,  
+    version=__version__,  
     name=SOURCE_REPO_NAME,
     author=AUTHOR_ID,
     author_email=EMAIL_ID,
