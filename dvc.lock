@@ -1,0 +1,161 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python  src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_01_dataingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 1dee2ca78746e08968281a314d97eb7a
+      size: 880
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_01_dataingestion.py
+      hash: md5
+      md5: fec4fea6b80a6bbc6fc415bc2545e3bd
+      size: 864
+    outs:
+    - path: artifacts/data_ingestion/Coccidiosis
+      hash: md5
+      md5: d184f46ac951095a8992b8427743d96f.dir
+      size: 83950898
+      nfiles: 2476
+    - path: artifacts/data_ingestion/Healthy
+      hash: md5
+      md5: d64cc1167daa17e0308682b82fbad13c.dir
+      size: 82348553
+      nfiles: 2404
+    - path: artifacts/data_ingestion/New Castle Disease
+      hash: md5
+      md5: f4c9c44c7f05f6e42e5b1b874bffb9f6.dir
+      size: 26497409
+      nfiles: 562
+    - path: artifacts/data_ingestion/Salmonella
+      hash: md5
+      md5: e6d177f01cd2676100c62e924d82c5a3.dir
+      size: 101109237
+      nfiles: 2625
+  Prepare_base_model:
+    cmd: python  src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_02_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 1dee2ca78746e08968281a314d97eb7a
+      size: 880
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_02_base_model.py
+      hash: md5
+      md5: 1b55247472426e007910e1d1ea5bb150
+      size: 958
+    params:
+      params.yaml:
+        CLASSES: 4
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.01
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 30c5c3cc8eadb13a0a5d50d77b0946e5.dir
+      size: 118259952
+      nfiles: 2
+  Training:
+    cmd: python src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_03_model_trainer.py
+    deps:
+    - path: artifacts/data_ingestion/Coccidiosis
+      hash: md5
+      md5: d184f46ac951095a8992b8427743d96f.dir
+      size: 83950898
+      nfiles: 2476
+    - path: artifacts/data_ingestion/Healthy
+      hash: md5
+      md5: d64cc1167daa17e0308682b82fbad13c.dir
+      size: 82348553
+      nfiles: 2404
+    - path: artifacts/data_ingestion/New Castle Disease
+      hash: md5
+      md5: f4c9c44c7f05f6e42e5b1b874bffb9f6.dir
+      size: 26497409
+      nfiles: 562
+    - path: artifacts/data_ingestion/Salmonella
+      hash: md5
+      md5: e6d177f01cd2676100c62e924d82c5a3.dir
+      size: 101109237
+      nfiles: 2625
+    - path: config/config.yaml
+      hash: md5
+      md5: 1dee2ca78746e08968281a314d97eb7a
+      size: 880
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_03_model_trainer.py
+      hash: md5
+      md5: 9f6abb6ab7f29cc2347a64b64ea4dfb4
+      size: 1422
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/components/call_back.py
+      hash: md5
+      md5: a2e6257eae8f5f3bb3e69c57a96a9b2b
+      size: 953
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 16
+        EPOCHS: 1
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: artifacts/training/model.h5
+      hash: md5
+      md5: d25886570be52e034cab48424333bfba
+      size: 59742128
+  Model_evaluation:
+    cmd: python src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_05_model_evaluation.py
+    deps:
+    - path: artifacts/data_ingestion/Coccidiosis
+      hash: md5
+      md5: d184f46ac951095a8992b8427743d96f.dir
+      size: 83950898
+      nfiles: 2476
+    - path: artifacts/data_ingestion/Healthy
+      hash: md5
+      md5: d64cc1167daa17e0308682b82fbad13c.dir
+      size: 82348553
+      nfiles: 2404
+    - path: artifacts/data_ingestion/New Castle Disease
+      hash: md5
+      md5: f4c9c44c7f05f6e42e5b1b874bffb9f6.dir
+      size: 26497409
+      nfiles: 562
+    - path: artifacts/data_ingestion/Salmonella
+      hash: md5
+      md5: e6d177f01cd2676100c62e924d82c5a3.dir
+      size: 101109237
+      nfiles: 2625
+    - path: artifacts/training/model.h5
+      hash: md5
+      md5: d25886570be52e034cab48424333bfba
+      size: 59742128
+    - path: config/config.yaml
+      hash: md5
+      md5: 1dee2ca78746e08968281a314d97eb7a
+      size: 880
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_05_model_evaluation.py
+      hash: md5
+      md5: ce186e1612bef4feb71063726dce0ebe
+      size: 1057
+    - path: src/CHICKEN_DISEASE_CLASSIFIER/components/call_back.py
+      hash: md5
+      md5: a2e6257eae8f5f3bb3e69c57a96a9b2b
+      size: 953
+    params:
+      params.yaml:
+        BATCH_SIZE: 16
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: scores.jason
+      hash: md5
+      md5: c4631adc05d6131547b4f4c1a71b98dc
+      size: 72

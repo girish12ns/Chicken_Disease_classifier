@@ -1,10 +1,10 @@
 stages: 
   data_ingestion :
-  cmd : python src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_01_data_ingestion.py
-  deps:
-     - src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_01_dataingestion.py
+    cmd : python  src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_01_dataingestion.py
+    deps:
+     - src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_01_dataingestion.py
      - config/config.yaml
-  outs :
+    outs :
     - artifacts/data_ingestion/Salmonella 
     - artifacts/data_ingestion/Coccidiosis
     - artifacts/data_ingestion/Healthy
@@ -13,9 +13,9 @@ stages:
     
 
   Prepare_base_model :
-   cmd : python src/CHICKEN_DISEASE_CLASSIFIACATION/Pipeline/stage_02_base_model.py
+   cmd : python  src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_02_base_model.py
    deps :
-     - python src/CHICKEN_DISEASE_CLASSIFIACATION/Pipeline/stage_02_base_model.py 
+     - src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_02_base_model.py 
      - config/config.yaml
    params:
       - IMAGE_SIZE
@@ -27,10 +27,10 @@ stages:
       - artifacts/prepare_base_model
 
   Training :
-   cmd : python src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_03_model_trainer.py
+   cmd : python src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_03_model_trainer.py
    deps:
-     - python src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_03_model_trainer.py
-     - python src/CHICKEN_DISEASE_CLASSIFICATION/components/call_back.py
+     - src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_03_model_trainer.py
+     - src/CHICKEN_DISEASE_CLASSIFIER/components/call_back.py
      - config/config.yaml
      - artifacts/data_ingestion/Salmonella 
      - artifacts/data_ingestion/Coccidiosis
@@ -40,16 +40,16 @@ stages:
       - IMAGE_SIZE
       - EPOCHS
       - BATCH_SIZE
-      - AUGMENTATIO
-  outs :
+      - AUGMENTATION
+   outs :
     - artifacts/training/model.h5
 
   Model_evaluation :
-    cmd : python src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_05_model_evaluation.py
+    cmd : python src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_05_model_evaluation.py
 
     deps :
-     - python src/CHICKEN_DISEASE_CLASSIFICATION/Pipeline/stage_05_model_evaluation.py
-     - python src/CHICKEN_DISEASE_CLASSIFICATION/components/call_back.py
+     - src/CHICKEN_DISEASE_CLASSIFIER/Pipeline/stage_05_model_evaluation.py
+     - src/CHICKEN_DISEASE_CLASSIFIER/components/call_back.py
      - config/config.yaml
      - artifacts/data_ingestion/Salmonella 
      - artifacts/data_ingestion/Coccidiosis
@@ -60,8 +60,9 @@ stages:
      - IMAGE_SIZE
      - BATCH_SIZE
     metrics:
-    - scores.json:
+    - scores.jason:
         cache: false
+
 
 
 
