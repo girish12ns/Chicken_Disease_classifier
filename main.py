@@ -2,6 +2,7 @@ from CHICKEN_DISEASE_CLASSIFIER import logger
 from CHICKEN_DISEASE_CLASSIFIER.Pipeline.stage_01_dataingestion import DataIngestionPipeline
 from CHICKEN_DISEASE_CLASSIFIER.Pipeline.stage_02_base_model import BaseModelPipeline
 from CHICKEN_DISEASE_CLASSIFIER.Pipeline.stage_03_model_trainer import ModelTrainerPipeline
+from CHICKEN_DISEASE_CLASSIFIER.Pipeline.stage_05_model_evaluation import ModelEvalutionPipeline
 
 
 
@@ -36,5 +37,13 @@ except Exception as e:
   logger.exception(e)
   raise e
 
+try:
+  logger.info("model_evaluation at {stage_name}")
+  eval=ModelEvalutionPipeline()
+  eval_obj=eval.main()
+  logger.info("base model_evalauation completed {stage_name}")
+except Exception as e:
+  logger.exception(e)
+  raise e
 
 

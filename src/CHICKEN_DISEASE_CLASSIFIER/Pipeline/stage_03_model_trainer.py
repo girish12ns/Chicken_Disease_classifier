@@ -32,3 +32,16 @@ class ModelTrainerPipeline:
 
         except Exception as e:
             raise e
+        
+if __name__=="__main__":
+    try:
+        logger.info("model training at {stage_name}")
+        model_obj=ModelTrainerPipeline()
+        obj=model_obj.main()
+        logger.info("base model_training completd {stage_name}")
+    except Exception as e:
+        logger.exception(e)
+        raise e
+
+
+

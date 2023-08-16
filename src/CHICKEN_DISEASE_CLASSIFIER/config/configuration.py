@@ -4,7 +4,8 @@ from pathlib import Path
 import os
 from CHICKEN_DISEASE_CLASSIFIER.constants import config_file_path,param_file_path
 from CHICKEN_DISEASE_CLASSIFIER.utils.common import read_yaml,create_directories
-from CHICKEN_DISEASE_CLASSIFIER.entity.config_entity import DataIngestionconfig,Base_Model,CallBacks,Model_train
+from CHICKEN_DISEASE_CLASSIFIER.entity.config_entity import (DataIngestionconfig,Base_Model,
+                                                            CallBacks,Model_train,evaluation_config)
 
 class ConfigurationManager:
     def __init__(self,
@@ -95,4 +96,21 @@ class ConfigurationManager:
                 params_image_size= params.IMAGE_SIZE)
         
         return training_config
+
+    
+    def get_validation_data_config(self)->evaluation_config:
+        
+        eval_config=evaluation_config(
+            path_of_model="artifacts/training/model.h5",
+            training_data="artifacts/data_ingestion",
+            all_params=self.params,
+            param_image_size=self.params.IMAGE_SIZE,
+            param_batch_size=self.params.BATCH_SIZE
+
+
+        )
+        return eval_config
+
+ 
+
     
