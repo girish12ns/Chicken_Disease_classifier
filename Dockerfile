@@ -9,6 +9,8 @@ WORKDIR /app
 # Copy application code into the container
 COPY . /app
 
+RUN chmod u+x /usr/local/bin/build.sh
+
 # Install Python dependencies
 RUN pip install -r requirements.txt
 
